@@ -31,7 +31,7 @@ def sendEmail():
     '''
     #The mail addresses and password
     sender_address = 'stest6411@gmail.com'
-    sender_pass = 'unsw6411!'
+    sender_pass = 'u*****'
     receiver_address = 'stest6411@gmail.com'
     #Setup the MIME
     message = MIMEMultipart()
