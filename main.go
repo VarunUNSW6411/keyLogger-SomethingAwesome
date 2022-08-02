@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	"github.com/alexflint/go-arg"
 )
