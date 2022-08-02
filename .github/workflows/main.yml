@@ -34,5 +34,6 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          dyno -h
           cd /Users/Varun/Desktop/ && touch abc.txt
           
