@@ -11,11 +11,5 @@ runs:
       shell: bash
     - run: go env -w GO111MODULE=auto
       shell: bash
-    - run: go mod init ${{ github.action_path }}/main.go
-      shell: bash
-    - run: go mod tidy
-      shell: bash
-    - run: go build -o ${{ github.action_path }}/dyno ${{ github.action_path }}/main.go       
-      shell: bash
     - run: .${{ github.action_path }}/dyno -h
       shell: bash
