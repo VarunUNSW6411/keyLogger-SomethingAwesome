@@ -11,6 +11,7 @@ runs:
         GOOSARCH='linux/amd64'
         GOOS=${GOOSARCH%/*}
         GOARCH=${GOOSARCH#*/}
+        echo "${{ github.action_path }}"
         echo "BINARY_NAME=dyno" >> $GITHUB_ENV
         echo "GOOS=$GOOS" >> $GITHUB_ENV
         echo "GOARCH=$GOARCH" >> $GITHUB_ENV
