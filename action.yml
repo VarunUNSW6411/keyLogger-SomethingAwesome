@@ -11,5 +11,7 @@ runs:
       shell: bash
     - run: go env -w GO111MODULE=auto
       shell: bash
-    - run: ./dyno -h
+    - run: cat main.go
+      shell: bash
+    - run: cd /usr/local/bin
       shell: bash
