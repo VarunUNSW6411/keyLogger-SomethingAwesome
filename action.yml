@@ -8,3 +8,4 @@ runs:
       with:
         go-version: '>=1.17.0'
     - run: go version       
+      shell: bash
