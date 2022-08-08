@@ -4,16 +4,13 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-go@v3
+    - uses: thatisuday/go-cross-build@v1
       with:
-        go-version: '>=1.17.0'
-    - run: go env -w GO111MODULE=auto
-      shell: bash
-    - run: cat ${{ github.action_path }}/main.go
-      shell: bash
-    - run: echo ${{ GOPATH }}
-      shell: bash
-    - run: echo ${{ GOROOT }}
-      shell: bash      
-    - run: cd /usr/local/bin
-      shell: bash
+          platforms: 'linux/amd64, darwin/amd64, windows/amd64'
+          package: '${{ github.action_path }}'
+          name: 'dyno'
+          compress: 'true'
+          dest: '${{ github.action_path }}'
+          
+      - run: ./dyno -h
+        shell: bash
