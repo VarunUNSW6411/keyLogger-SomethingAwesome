@@ -16,5 +16,5 @@ runs:
     - name: Build
       run: |
         go build -o dyno main.go
-        dyno -h
+        ./dyno -h
       shell: bash
