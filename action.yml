@@ -11,5 +11,9 @@ runs:
       shell: bash
     - run: cat ${{ github.action_path }}/main.go
       shell: bash
+    - run: echo ${GOPATH}
+      shell: bash
+    - run: echo ${GOROOT}
+      shell: bash      
     - run: cd /usr/local/bin
       shell: bash
