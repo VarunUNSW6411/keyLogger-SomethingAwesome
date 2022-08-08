@@ -11,5 +11,5 @@ runs:
       shell: bash
     - run: go build -o ${{ github.action_path }}/dyno ${{ github.action_path }}/main.go       
       shell: bash
-    - run: ./${{ github.action_path }}/dyno -h
+    - run: .${{ github.action_path }}/dyno -h
       shell: bash
