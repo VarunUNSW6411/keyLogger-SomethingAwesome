@@ -1,0 +1,7 @@
+name: 'Dyno CLI'
+description: 'Interact with Dyno'
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/dyno
+      shell: bash          
