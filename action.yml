@@ -12,9 +12,18 @@ runs:
         GOOSARCH='linux/amd64'
         GOOS=${GOOSARCH%/*}
         GOARCH=${GOOSARCH#*/}
+        echo "BINARY_NAME=dyno" >> $GITHUB_ENV
+        echo "GOOS=$GOOS" >> $GITHUB_ENV
+        echo "GOARCH=$GOARCH" >> $GITHUB_ENV
       shell: bash
     - name: Build
       run: |
         go build -o dyno main.go
         ./dyno -h
       shell: bash
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{env.BINARY_NAME}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
