@@ -12,10 +12,9 @@ runs:
         GOOSARCH='linux/amd64'
         GOOS=${GOOSARCH%/*}
         GOARCH=${GOOSARCH#*/}
-        BINARY_NAME='dyno'
       shell: bash
     - name: Build
       run: |
-        go build -o "$BINARY_NAME" main.go
+        go build -o dyno main.go
         dyno -h
       shell: bash
