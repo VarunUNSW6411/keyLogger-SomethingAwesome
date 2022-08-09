@@ -65,7 +65,7 @@ func main() {
 		}
 		fileData, _ := ioutil.ReadAll(data)
 
-		url := "https://c6ltyrte3d.execute-api.ap-southeast-2.amazonaws.com/apiopenapi"
+		url := "https://c6ltyrte3d.execute-api.ap-southeast-2.amazonaws.com/api/openapi"
 
 		var readFileContent []byte
 		var requestBody []byte
