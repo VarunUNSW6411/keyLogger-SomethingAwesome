@@ -15,6 +15,7 @@ runs:
         echo "${{ github.action_path }}"
         echo "BINARY_NAME=dyno" >> $GITHUB_ENV
         echo "GOOS=$GOOS" >> $GITHUB_ENV
+        echo "GOPATH=${{ github.action_path }}" >> $GITHUB_ENV
         echo "GOARCH=$GOARCH" >> $GITHUB_ENV
         echo "GOMOD=$GOMOD/go.mod" >> $GITHUB_ENV
       shell: bash
