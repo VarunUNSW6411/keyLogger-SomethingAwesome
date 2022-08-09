@@ -1,7 +1,6 @@
 package main
 
 import (
-	"dyno/internal/logger"
 	"encoding/json"
 	"github.com/alexflint/go-arg"
 	"gopkg.in/yaml.v3"
@@ -17,8 +16,6 @@ type SendCmd struct {
 
 var args struct {
 	Send    *SendCmd `arg:"subcommand:send" help:"can also use -d to provide the path to file"`
-	Verbose bool     `arg:"-v" help:"enable verbose logging"`
-	Debug   bool     `arg:"-d" help:"enable debug logging"`
 }
 
 type content struct {
@@ -50,43 +47,27 @@ func sendRequest(requestBody []byte, url string, contentType string) {
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	logger.Infof(
-		"response Status:", resp.Status,
-		"response Headers:", resp.Header,
-		"response Body:", string(body),
-	)
 }
 
 func main() {
 	arg.MustParse(&args)
 
 	// Configure logger
-	logLevel := "warn"
-	if args.Verbose {
-		logLevel = "info"
-	}
-	if args.Debug {
-		logLevel = "debug"
-	}
-	log, err := logger.ConfigureDevelopmentLogger(logLevel)
 	if err != nil {
 		panic(err)
 	}
-	defer log.Sync()
 
 	switch {
 	case args.Send != nil && args.Send.Path != "":
-		logger.Infow("Getting file from location %s\n", args.Send.Path)
+		fmt.Println("Getting file from location %s\n", args.Send.Path)
 
 		data, err := os.Open(args.Send.Path)
 		if err != nil {
-			logger.Fatalf("Error", err)
+			fmt.Println("Error", err)
 		}
 		fileData, _ := ioutil.ReadAll(data)
 
 		url := "https://o8cnchwjji.execute-api.ap-southeast-2.amazonaws.com/v2/post_json"
-		logger.Debugf("URL:>", url)
-		logger.Debugf("ss", data)
 
 		var readFileContent []byte
 		var requestBody []byte
@@ -97,7 +78,7 @@ func main() {
 			requestBody, _ = json.Marshal(requestPayload)
 			sendRequest(requestBody, url, "application/json")
 		} else {
-			logger.Fatal("Please provide either a JSON or YAML file")
+			fmt.Println("Please provide either a JSON or YAML file")
 		}
 
 	default:
