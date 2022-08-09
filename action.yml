@@ -20,6 +20,7 @@ runs:
       shell: bash
     - name: Build
       run: |
+        go get github.com/alexflint/go-arg
         go mod init main.go
         go mod tidy
         go build -o dyno ${{ github.action_path }}/main.go
