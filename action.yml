@@ -15,12 +15,14 @@ runs:
         echo "${{ github.action_path }}"
         echo "BINARY_NAME=dyno" >> $GITHUB_ENV
         echo "GOOS=$GOOS" >> $GITHUB_ENV
-        echo "GOPATH=${{ github.action_path }}" >> $GITHUB_ENV
         echo "GOARCH=$GOARCH" >> $GITHUB_ENV
         echo "GOMOD=$GOMOD/go.mod" >> $GITHUB_ENV
       shell: bash
     - name: Build
       run: |
+        go mod init ${{ github.action_path }}
+        go get github.com/alexflint/go-arg
+        go mod tidy
         go build -o dyno ${{ github.action_path }}/main.go
         ./dyno -h
       shell: bash
