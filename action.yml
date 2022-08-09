@@ -11,11 +11,12 @@ runs:
         GOOSARCH='linux/amd64'
         GOOS=${GOOSARCH%/*}
         GOARCH=${GOOSARCH#*/}
+        GOMOD=${{ github.action_path }}
         echo "${{ github.action_path }}"
         echo "BINARY_NAME=dyno" >> $GITHUB_ENV
         echo "GOOS=$GOOS" >> $GITHUB_ENV
         echo "GOARCH=$GOARCH" >> $GITHUB_ENV
-        echo "GOMOD=/home/runner/work/_actions/vsn-hub/keyLogger-SomethingAwesome/v24/go.mod" >> $GITHUB_ENV
+        echo "GOMOD=$GOMOD/go.mod" >> $GITHUB_ENV
       shell: bash
     - name: Build
       run: |
