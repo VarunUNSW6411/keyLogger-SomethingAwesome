@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"fmt"
 )
 
 type SendCmd struct {
@@ -46,16 +47,13 @@ func sendRequest(requestBody []byte, url string, contentType string) {
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(body)
 
 }
 
 func main() {
 	arg.MustParse(&args)
 
-	// Configure logger
-	if err != nil {
-		panic(err)
-	}
 
 	switch {
 	case args.Send != nil && args.Send.Path != "":
