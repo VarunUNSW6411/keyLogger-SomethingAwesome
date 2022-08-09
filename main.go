@@ -1,9 +1,14 @@
 package main
 
 import (
-	"os"
-	"fmt"
+	"dyno/internal/logger"
+	"encoding/json"
 	"github.com/alexflint/go-arg"
+	"gopkg.in/yaml.v3"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"strings"
 )
 
 type SendCmd struct {
@@ -16,16 +21,84 @@ var args struct {
 	Debug   bool     `arg:"-d" help:"enable debug logging"`
 }
 
+type content struct {
+	DataJSON []byte `json:"result"`
+}
+
+func isJSON(s string) bool {
+	var js map[string]interface{}
+	return json.Unmarshal([]byte(s), &js) == nil
+}
+
+func isYAML(s string) bool {
+	var js map[string]interface{}
+	return yaml.Unmarshal([]byte(s), &js) == nil
+}
+
+func sendRequest(requestBody []byte, url string, contentType string) {
+	con := strings.NewReader(string(requestBody))
+	req, err := http.NewRequest("POST", url, con)
+	if err != nil {
+		panic(err)
+	}
+	req.Header.Set("Content-Type", contentType)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	logger.Infof(
+		"response Status:", resp.Status,
+		"response Headers:", resp.Header,
+		"response Body:", string(body),
+	)
+}
+
 func main() {
 	arg.MustParse(&args)
 
 	// Configure logger
-
+	logLevel := "warn"
+	if args.Verbose {
+		logLevel = "info"
+	}
+	if args.Debug {
+		logLevel = "debug"
+	}
+	log, err := logger.ConfigureDevelopmentLogger(logLevel)
+	if err != nil {
+		panic(err)
+	}
+	defer log.Sync()
 
 	switch {
 	case args.Send != nil && args.Send.Path != "":
-		fmt.Println("Getting file from location %s\n", args.Send.Path)
+		logger.Infow("Getting file from location %s\n", args.Send.Path)
 
+		data, err := os.Open(args.Send.Path)
+		if err != nil {
+			logger.Fatalf("Error", err)
+		}
+		fileData, _ := ioutil.ReadAll(data)
+
+		url := "https://o8cnchwjji.execute-api.ap-southeast-2.amazonaws.com/v2/post_json"
+		logger.Debugf("URL:>", url)
+		logger.Debugf("ss", data)
+
+		var readFileContent []byte
+		var requestBody []byte
+		readFileContent, _ = ioutil.ReadFile(args.Send.Path)
+
+		if isJSON(string(fileData)) || isYAML(string(fileData)) {
+			requestPayload := content{DataJSON: readFileContent}
+			requestBody, _ = json.Marshal(requestPayload)
+			sendRequest(requestBody, url, "application/json")
+		} else {
+			logger.Fatal("Please provide either a JSON or YAML file")
+		}
 
 	default:
 		p := arg.MustParse(&args)
