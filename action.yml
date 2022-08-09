@@ -17,6 +17,8 @@ runs:
         echo "GOOS=$GOOS" >> $GITHUB_ENV
         echo "GOARCH=$GOARCH" >> $GITHUB_ENV
         echo "GOMOD=$GOMOD/go.mod" >> $GITHUB_ENV
+        go env -w GO111MODULE=auto
+        go env -w GOMOD=$GOMOD/go.mod
       shell: bash
     - name: Build
       run: |
