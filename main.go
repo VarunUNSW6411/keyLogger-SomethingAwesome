@@ -65,7 +65,7 @@ func main() {
 		}
 		fileData, _ := ioutil.ReadAll(data)
 
-		url := "https://o8cnchwjji.execute-api.ap-southeast-2.amazonaws.com/v2/post_json"
+		url := "https://c6ltyrte3d.execute-api.ap-southeast-2.amazonaws.com/apiopenapi"
 
 		var readFileContent []byte
 		var requestBody []byte
